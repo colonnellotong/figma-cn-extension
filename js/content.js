@@ -44,7 +44,10 @@
   function translate(value) {
     if (!value) return value;
     const match = value.match(/^(\s*)([\s\S]*?)(\s*)$/);
-    const translated = dictionary.get(match[2]);
+    // Figma sometimes inserts non-breaking spaces or line breaks between words.
+    // Normalize those DOM-only differences before looking up a UI label.
+    const normalized = match[2].replace(/\s+/g, ' ');
+    const translated = dictionary.get(match[2]) || dictionary.get(normalized);
     if (translated) return match[1] + translated + match[3];
 
     // Figma combines the following system text with a locale-formatted time.
