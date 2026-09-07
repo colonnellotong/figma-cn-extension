@@ -1,0 +1,92 @@
+/* FigmaCN — local, dependency-free Simplified Chinese translations. */
+(() => {
+  'use strict';
+
+  // Complete UI labels only: user content such as file names and comments stays intact.
+  const entries = [...(window.__FigmaCNLegacyEntries || []),
+    ['Home', '首页'], ['Recents', '最近使用'], ['Recently viewed', '最近查看'], ['Drafts', '草稿'], ['All files', '全部文件'], ['Shared with you', '与我共享'],
+    ['Your drafts', '你的草稿'], ['Design files', '设计文件'], ['FigJam boards', 'FigJam 白板'], ['Slide decks', '演示文稿'], ['Create a new', '新建'], ['Create from template', '从模板创建'], ['Start from scratch', '从头开始'], ['Explore templates', '探索模板'], ['Open in new tab', '在新标签页中打开'], ['Get link', '获取链接'], ['Show in folder', '在文件夹中显示'], ['Remove from recents', '从最近使用中移除'], ['Move', '移动'], ['New', '新建'],
+    ['Trash', '废纸篓'], ['Permanently delete', '永久删除'], ['All folders', '所有文件夹'], ['Team folder', '团队文件夹'], ['Starred', '已收藏'], ['Folders', '文件夹'], ['Created by you', '由你创建'], ['Date trashed', '移至废纸篓日期'], ['See what’s included', '查看包含内容'], ["See what's included", '查看包含内容'], ['Your plan and usage', '你的套餐和用量'],
+    ['Custom templates—just for your team', '仅供团队使用的自定义模板'], ['Upgrade to the Professional plan, and build templates for your team’s rituals and workflows—without creating a new file each time.', '升级到专业版，为团队的日常协作与工作流程创建模板，无需每次都新建文件。'], ["Upgrade to the Professional plan, and build templates for your team's rituals and workflows—without creating a new file each time.", '升级到专业版，为团队的日常协作与工作流程创建模板，无需每次都新建文件。'], ['Browse resources from Community', '浏览社区资源'],
+    ['Variables', '变量'], ['Collections', '变量集合'], ['No variables created in this file', '此文件中尚未创建变量'], ['Save colors, numbers, text, and states to reuse them in styles, prototypes, and across files.', '保存颜色、数字、文本和状态，以便在样式、原型和其他文件中重复使用。'], ['Control opacity at scale', '批量控制不透明度'], ['Brand ramps', '品牌色阶'], ['Easily apply and adjust opacity in the variables modal to a linked color without needing to detach.', '无需解除关联，即可在变量窗口中轻松将不透明度应用并调整到关联颜色。'], ['Got it', '知道了'],
+    ['Agents', '智能代理'], ['New chat', '新建聊天'], ['What’s next?', '接下来做什么？'], ["What's next?", '接下来做什么？'], ['Tidy and polish', '整理并润色'], ['Generate designs', '生成设计'], ['Create plugins and shaders', '创建插件和着色器'], ['Describe your idea', '描述你的想法'], ['Add Figma to your agentic coding tool', '将 Figma 添加到你的智能编程工具'], ['Add with one click:', '一键添加：'], ['Install in Claude Desktop', '在 Claude Desktop 中安装'], ['Install in VS Code', '在 VS Code 中安装'], ['Recommended', '推荐'], ['Open your terminal and run:', '打开终端并运行：'], ['Or, add manually in Claude Desktop settings:', '或者，在 Claude Desktop 设置中手动添加：'], ['Or, add manually in VS Code settings:', '或者，在 VS Code 设置中手动添加：'], ['Add manually in Other agents settings:', '在其他智能代理设置中手动添加：'], ['Other agents', '其他智能代理'], ['Code snippet', '代码片段'],
+    ['Other code editors and tools that support SSE (Server-Sent Events) can also connect to the Figma MCP server', '支持 SSE（服务器发送事件）的其他代码编辑器和工具也可以连接到 Figma MCP 服务器。'], ['Check your editor’s documentation to confirm it supports SSE-based communication', '请查看编辑器文档，确认其支持基于 SSE 的通信。'], ["Check your editor's documentation to confirm it supports SSE-based communication", '请查看编辑器文档，确认其支持基于 SSE 的通信。'], ['If it does, you can manually add the Figma MCP server using this configuration:', '如果支持，你可以使用以下配置手动添加 Figma MCP 服务器：'], ['Note: The Figma MCP server communicates over the SSE protocol. Use your editor’s steps for setting up a Streamable HTTP MCP server', '注意：Figma MCP 服务器通过 SSE 协议通信。请按照编辑器设置流式 HTTP MCP 服务器的步骤操作。'], ["Note: The Figma MCP server communicates over the SSE protocol. Use your editor's steps for setting up a Streamable HTTP MCP server", '注意：Figma MCP 服务器通过 SSE 协议通信。请按照编辑器设置流式 HTTP MCP 服务器的步骤操作。'],
+    ['Use the shortcut ⌘⇧P to search for MCP:Add Server', '使用快捷键 ⌘⇧P 搜索 MCP:Add Server。'], ['Select HTTP', '选择 HTTP。'], ['Paste the server url https://mcp.figma.com/mcp in the search bar, then hit Enter', '在搜索栏粘贴服务器地址 https://mcp.figma.com/mcp，然后按 Enter。'], ['Type in Figma MCP when it asks for a Server ID, then hit Enter', '询问服务器 ID 时输入 Figma MCP，然后按 Enter。'], ['Select whether you want to add this server globally or only for the current workspace', '选择将服务器全局添加，还是只添加到当前工作区。'], ['Open the chat toolbar using ⌥⌘B or ^⌘I and switch to Agent mode', '使用 ⌥⌘B 或 ^⌘I 打开聊天工具栏，并切换到代理模式。'], ['With the chat open, type in #get_design_context to confirm that the Figma MCP server tools are available', '打开聊天后，输入 #get_design_context 确认 Figma MCP 服务器工具可用。'],
+    ['Actions...', '操作…'], ['New Design', '新建设计'], ['Import from Sketch', '从 Sketch 导入'], ['Create branch...', '创建分支…'], ['AI balance', 'AI 余额'], ['Page', '页面'], ['Styles', '样式'], ['1 connection', '1 个连接'], ['connections', '个连接'], ['Local styles', '本地样式'], ['Publish styles and components', '发布样式和组件'], ['Open in desktop app', '在桌面应用中打开']
+    ,['Search all libraries', '搜索所有资源库'], ['All libraries', '所有资源库'], ['List', '列表'], ['Show subfolders', '显示子文件夹'], ['Manage libraries', '管理资源库'], ['Browse libraries', '浏览资源库'], ['Publish your components as a library', '将组件发布为资源库'], ['Share components with your team when you upgrade to a Professional plan.', '升级到专业版后，即可与团队共享组件。'], ['Publish this file', '发布此文件'], ['Libraries added to this file', '已添加到此文件的资源库'], ['No team libraries', '没有团队资源库'], ['You’re not on a team with published libraries. Upgrade to publish and share team libraries.', '你所在的团队没有已发布的资源库。升级后即可发布和共享团队资源库。'], ["You're not on a team with published libraries. Upgrade to publish and share team libraries.", '你所在的团队没有已发布的资源库。升级后即可发布和共享团队资源库。'], ['Pre-made, customizable design templates for quick prototyping in Figma.', '预制且可自定义的设计模板，可用于在 Figma 中快速制作原型。'],
+    ['Prototype settings', '原型设置'], ['No device', '无设备'], ['upgrade to a Professional plan', '升级到专业版'], ['components', '组件'], ['Search all tools', '搜索所有工具'], ['Source', '来源'], ['Category', '类别'], ['Build your own shaders', '创建自己的着色器'], ['Liquid metal? Check. Mesh gradients? Double check. Ask the agent to create any shader effects and fills you need.', '液态金属？没问题。网格渐变？也没问题。让智能代理创建你需要的任何着色器效果和填充。'], ['Ask agent', '询问智能代理'], ['Suggested', '推荐'], ['By Figma', '由 Figma 提供'], ['Shader effect', '着色器效果'], ['Shader fill', '着色器填充'], ['Weave tool', '编织工具'], ['Widget', '小组件'], ['Price', '价格'], ['All prices', '全部价格'], ['Figma AI credits', 'Figma AI 点数'], ['Paid', '付费'], ['Plugins & widgets', '插件和小组件'], ['No plugins or widgets found', '未找到插件或小组件']
+    ,['Report abuse', '举报滥用'], ['Change keyboard layout...', '更改键盘布局…'], ['Change language...', '更改语言…'], ['Making social media assets?', '正在制作社交媒体素材？'], ['Use Figma Buzz to keep all your work on-brand, even after handoff.', '使用 Figma Buzz，让你的所有作品即使在交接后也始终保持品牌一致。'], ['Try Figma Buzz', '试用 Figma Buzz'], ['Making a website?', '正在制作网站？'], ['Use Figma Sites for simpler website building and publishing.', '使用 Figma Sites，更轻松地构建和发布网站。'], ['Try Figma Sites', '试用 Figma Sites'], ['Split vector', '拆分矢量'], ['Simplify vector', '简化矢量'], ['Offset vector', '偏移矢量'],
+    ['Find', '查找'], ['Find next', '查找下一个'], ['Find previous', '查找上一个'], ['Find and replace...', '查找和替换…'], ['Select matching layers', '选择匹配的图层'], ['Select all with', '全选具有以下条件的图层'], ['Layout guides', '布局参考线'], ['Annotations', '批注'], ['Memory usage', '内存使用情况'], ['Additional labels', '附加标签'], ['Minimize UI', '最小化界面'], ['Switch to Draw', '切换至绘图'], ['Switch to Dev Mode', '切换至开发模式'], ['Manage widgets...', '管理小组件…'], ['Select all widgets', '选择所有小组件']
+    ,['Use smart quotes/symbols', '使用智能引号/符号'], ['Ctrl+click opens right click menus', 'Ctrl+单击打开右键菜单'], ['Use old shortcuts for outlines', '对轮廓使用旧版快捷键'], ['Use ⌘↖/↓ to rotate layers', '使用 ⌘↖/↓ 旋转图层'], ['Play audio notifications in AI chat', '在 AI 聊天中播放音频通知'], ['Show Agents on canvas', '在画布上显示智能代理'], ['Use scroll wheel zoom', '使用滚轮缩放'], ['Right-click and drag to pan', '右键拖动以平移'], ['Theme', '主题'], ['Color profile...', '色彩配置文件…'], ['Keyboard layout...', '键盘布局…'], ['Accessibility settings...', '无障碍设置…'], ['Permissions and helpers...', '权限和辅助工具…'],
+    ['500 credits left', '剩余 500 点额度'], ['150/150 daily credits left', '每日剩余 150/150 点额度'], ['Create branch…', '创建分支…'], ['Export Untitled', '导出未命名文件'], ['Section', '分区'], ['Frame', '画框'], ['Slice', '切片'],
+    ['Community', '社区'], ['Resources', '资源'], ['Plugins', '插件'], ['Widgets', '小组件'], ['Templates', '模板'], ['Explore', '探索'], ['Search', '搜索'], ['Search files', '搜索文件'], ['Search your files', '搜索你的文件'], ['Search the Figma Community', '搜索 Figma 社区'],
+    ['Your teams', '你的团队'], ['Teams', '团队'], ['Projects', '项目'], ['Project', '项目'], ['Create new', '新建'], ['Create', '创建'], ['New design file', '新建设计文件'], ['New FigJam file', '新建 FigJam 文件'], ['New board', '新建白板'], ['Import', '导入'], ['Import file', '导入文件'], ['Import files', '导入文件'], ['Create team', '创建团队'], ['Create project', '创建项目'], ['Create file', '创建文件'], ['Move to project', '移动到项目'], ['Move to project…', '移动到项目…'],
+    ['Duplicate', '创建副本'], ['Rename', '重命名'], ['Delete', '删除'], ['Restore', '恢复'], ['Open', '打开'], ['Close', '关闭'], ['Back', '返回'], ['Next', '下一步'], ['Done', '完成'], ['Cancel', '取消'], ['Save', '保存'], ['Continue', '继续'], ['Try again', '重试'], ['Refresh', '刷新'], ['Learn more', '了解更多'], ['Get started', '开始使用'], ['View all', '查看全部'], ['See all', '查看全部'],
+    ['Design', '设计'], ['FigJam', 'FigJam'], ['Slides', '演示文稿'], ['Dev Mode', '开发模式'], ['Design file', '设计文件'], ['FigJam file', 'FigJam 文件'], ['Prototype', '原型'], ['Whiteboard', '白板'], ['Presentation', '演示文稿'], ['Library', '组件库'], ['Libraries', '组件库'],
+    ['Settings', '设置'], ['Preferences', '偏好设置'], ['Help', '帮助'], ['Support', '支持'], ['Notifications', '通知'], ['Activity', '活动'], ['Profile', '个人资料'], ['Account settings', '账户设置'], ['Sign out', '退出登录'], ['Upgrade', '升级'], ['Upgrade plan', '升级套餐'], ['Billing', '账单'], ['Members', '成员'], ['Invite', '邀请'], ['Invite members', '邀请成员'], ['Share', '分享'], ['Share settings', '分享设置'], ['Copy link', '复制链接'], ['Copy', '复制'], ['Paste', '粘贴'], ['Cut', '剪切'], ['Comments', '评论'], ['Versions', '版本'], ['Version history', '版本历史'],
+    ['Favorites', '收藏'], ['Following', '正在关注'], ['Follow', '关注'], ['Unfollow', '取消关注'], ['Recent', '最近使用'], ['Popular', '热门'], ['Featured', '精选'], ['Trending', '趋势'], ['Start designing', '开始设计'], ['Start creating', '开始创建'], ['Browse templates', '浏览模板'], ['Browse plugins', '浏览插件'], ['Explore Community', '探索社区'], ['View Community', '查看社区'], ['Welcome to Figma', '欢迎使用 Figma'], ['Welcome to Figma!', '欢迎使用 Figma！'], ['No files yet', '还没有文件'], ['No projects yet', '还没有项目'], ['No results found', '未找到结果'], ['Loading…', '正在加载…'], ['Loading...', '正在加载…'], ['Untitled', '未命名'], ['Edited just now', '刚刚编辑'], ['Today', '今天'], ['Yesterday', '昨天'],
+    ['Private', '私密'], ['Public', '公开'], ['View only', '仅查看'], ['Can edit', '可编辑'], ['Can view', '可查看'], ['Owner', '所有者'], ['Editor', '编辑者'], ['Viewer', '查看者'], ['Plan', '套餐'], ['Organization', '组织'], ['Professional', '专业版'], ['Starter', '入门版'], ['Figma Community', 'Figma 社区'], ['What’s new', '新功能'], ["What's new", '新功能'], ['Quick actions', '快捷操作'], ['More options', '更多选项'], ['Show more', '显示更多'], ['Hide sidebar', '隐藏侧边栏'], ['Show sidebar', '显示侧边栏'], ['Grid view', '网格视图'], ['List view', '列表视图'], ['Sort by', '排序方式'], ['Last modified', '最近修改'], ['Date created', '创建日期'], ['Name', '名称'], ['File', '文件'], ['Files', '文件'],
+    ['Build plugins with the Figma agent', '使用 Figma 智能代理构建插件'], ['Describe your idea and the agent will create it for you. Or, browse and run any tool from the Tools panel.', '描述你的想法，智能代理将为你创建插件。或者在「工具」面板中浏览并运行任意工具。'], ['See all tools', '查看所有工具'], ['Suggestions', '建议'], ['Find assets by name, or simply describe them', '按名称查找资源，或直接描述所需资源'], ['Ex: “checkmark icon”', '示例：“对勾图标”'], ['Find and replace…', '查找和替换…'], ['Common settings', '常用设置'], ['Show rulers', '显示标尺'], ['Text on path', '路径文字'], ['Image/video…', '图像/视频…'],
+    ['Content generation', '内容生成'], ['Shaders', '着色器'], ['Styling', '样式设计'], ['Editing', '编辑'], ['Format & resize', '格式与调整大小'], ['Fun & creative', '趣味与创意'], ['Product & brand', '产品与品牌'], ['Prototyping & animation', '原型与动画'], ['File organization', '文件整理'], ['Import & export', '导入与导出'], ['Accessibility tools', '无障碍工具'], ['Other', '其他'],
+    ['Wrap in new section', '置于新分区中'], ['Convert to section', '转换为分区'], ['Convert to frame', '转换为画框'], ['More layout options', '更多布局选项'], ['Slots', '插槽'], ['Remove interactions', '移除交互'], ['Delete contents', '删除内容'], ['Text direction', '文本方向'], ['Spell check', '拼写检查'], ['Check spelling', '检查拼写'], ['English (Canada)', '英语（加拿大）'], ['English (United Kingdom)', '英语（英国）'], ['English (United States)', '英语（美国）'], ['Russian', '俄语'], ['Left to right', '从左到右'], ['Right to left', '从右到左'],
+    ['Suggest auto layout', '建议自动布局'], ['Remove all auto layout', '移除所有自动布局'], ['Lock aspect ratio', '锁定宽高比'], ['Unlock aspect ratio', '解锁宽高比'], ['Resize to fit', '调整大小以适应内容'], ['Set width to hug contents', '将宽度设为适应内容'], ['Set height to hug contents', '将高度设为适应内容'], ['Set width to fill container', '将宽度设为填充容器'], ['Set height to fill container', '将高度设为填充容器'], ['Convert to slot', '转换为插槽'], ['Wrap in new slot', '置于新插槽中'], ['Reset slot', '重置插槽'],
+    ['Put Weave on repeat', '让 Weave 重复发挥'], ['Create polished visuals every time with Weave tools. Each tool is backed by an AI workflow, bringing you consistent outputs.', '使用 Weave 工具每次都能创建精美视觉内容。每个工具均由 AI 工作流支持，为你带来一致的输出。'], ['Browse Weave tools', '浏览 Weave 工具'],
+    ['Use the following commands to check MCP settings and manage servers:', '使用以下命令检查 MCP 设置和管理服务器：'], ['List all configured servers', '列出所有已配置的服务器'], ['Get details for a specific server', '获取指定服务器的详细信息'], ['Remove a server', '移除服务器'], ['Tip: To make your Figma MCP server available across all projects, install it with the --scope user flag:', '提示：要让 Figma MCP 服务器在所有项目中可用，请使用 --scope user 参数安装：'], ['By default, Claude Code uses local scope, so the server is only available in the current project. This can lead to confusion and unnecessary reinstalls when switching projects.', '默认情况下，Claude Code 使用本地范围，因此服务器仅在当前项目中可用。切换项目时这可能造成困惑和不必要的重复安装。'],
+    ['Add via a Cursor plugin:', '通过 Cursor 插件添加：'], ['Open Cursor’s agent chat and type the following:', '打开 Cursor 的智能代理聊天，并输入以下内容：'], ["Open Cursor's agent chat and type the following:", '打开 Cursor 的智能代理聊天，并输入以下内容：'], ['Or, add manually in Cursor settings:', '或者，在 Cursor 设置中手动添加：'], ['Open Cursor → Settings → Cursor Settings', '打开 Cursor → 设置 → Cursor 设置'], ['Click on Tools & MCP', '点击「工具和 MCP」'], ['Under MCP Tools, click + to add a custom MCP server', '在 MCP 工具下，点击 + 添加自定义 MCP 服务器'], ['Paste the code snippet into the mcp.json file and save', '将代码片段粘贴到 mcp.json 文件并保存'],
+    ['Only available in Xcode 27 Beta', '仅在 Xcode 27 Beta 中可用'], ['Or, add the Figma Plug-in in Xcode 27 Beta settings:', '或者，在 Xcode 27 Beta 设置中添加 Figma 插件：'], ['Choose Add from URL...', '选择「从 URL 添加…」'], ['Enter the following in the URL field:', '在 URL 字段中输入以下内容：'], ['Choose the Figma Plug-in', '选择 Figma 插件'], ['Once installed, sign in to your Figma account', '安装完成后，登录你的 Figma 账户'], ['Add via a Kiro power:', '通过 Kiro Power 添加：'], ['Open Kiro', '打开 Kiro'], ['Click the Powers button in the sidebar', '点击侧边栏中的 Powers 按钮'], ['Search for Figma', '搜索 Figma'], ['Click install', '点击安装']
+  ];
+  // The archived dictionary contains one sparse legacy record. Filter malformed
+  // items so a single bad translation can never stop the whole extension.
+  const dictionary = new Map(entries.filter((entry) => Array.isArray(entry) && entry.length >= 2 && typeof entry[0] === 'string' && typeof entry[1] === 'string'));
+  const attributeNames = ['aria-label', 'data-label', 'data-tooltip', 'title', 'placeholder'];
+  const ignoredTags = new Set(['SCRIPT', 'STYLE', 'NOSCRIPT', 'TEXTAREA', 'CODE', 'PRE']);
+
+  function translate(value) {
+    if (!value) return value;
+    const match = value.match(/^(\s*)([\s\S]*?)(\s*)$/);
+    const translated = dictionary.get(match[2]);
+    if (translated) return match[1] + translated + match[3];
+
+    // Figma combines the following system text with a locale-formatted time.
+    // Matching only this fixed prefix avoids touching file names or comments.
+    const trashed = match[2].match(/^Trashed by you\s+(.+)$/);
+    if (trashed) return match[1] + '已由你移至废纸篓 ' + trashed[1] + match[3];
+    const components = match[2].match(/^(\d+) components$/);
+    if (components) return match[1] + components[1] + ' 个组件' + match[3];
+    const credits = match[2].match(/^(.+)'s team is a Starter plan, which comes with 500 credits a month and a 150-per-day limit\. Your seat credits reset (.+)\.$/);
+    if (credits) return match[1] + credits[1] + ' 的团队使用入门版套餐，每月含 500 点额度，每日上限为 150 点。你的席位额度将在 ' + credits[2] + ' 重置。' + match[3];
+    return value;
+  }
+  function translateNode(node) {
+    if (node.nodeType === Node.TEXT_NODE) {
+      const parent = node.parentElement;
+      if (!parent || ignoredTags.has(parent.tagName) || parent.isContentEditable) return;
+      const next = translate(node.nodeValue);
+      if (next !== node.nodeValue) node.nodeValue = next;
+      return;
+    }
+    if (node.nodeType !== Node.ELEMENT_NODE || ignoredTags.has(node.tagName) || node.isContentEditable) return;
+    for (const name of attributeNames) {
+      const value = node.getAttribute(name), next = translate(value);
+      if (next !== value) node.setAttribute(name, next);
+    }
+  }
+  function translateTree(root) {
+    if (!root) return;
+    translateNode(root);
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT);
+    let node;
+    while ((node = walker.nextNode())) translateNode(node);
+  }
+  let queued = false;
+  function schedule() {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(() => { queued = false; translateTree(document.body); });
+  }
+  function start() {
+    translateTree(document.body);
+    new MutationObserver(schedule).observe(document.body, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: attributeNames });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, { once: true }); else start();
+})();

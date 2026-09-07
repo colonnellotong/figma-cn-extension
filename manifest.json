@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "FigmaCN",
+  "short_name": "FigmaCN",
+  "description": "本地运行的 Figma 简体中文界面翻译扩展。",
+  "version": "2.0.0",
+  "icons": {
+    "16": "img/icon-16.png",
+    "48": "img/icon-48.png",
+    "128": "img/icon-128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.figma.com/*"
+      ],
+      "js": [
+        "js/legacy-dictionary.js",
+        "js/content.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": true
+    }
+  ],
+  "host_permissions": ["*://*.figma.com/*"]
+}
