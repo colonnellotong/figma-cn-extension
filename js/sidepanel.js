@@ -1,7 +1,8 @@
-import { providers, sourceItems, translateItems } from './translation-api.js';
+import { sourceItems, translateItems } from './translation-api.js';
+import { configKey, loadConfig } from './api-settings.js';
 
 const el = id => document.getElementById(id);
-const inputIds = ['source', 'split-lines', 'provider', 'model', 'api-key', 'languages', 'instructions'];
+const inputIds = ['source', 'split-lines', 'languages', 'instructions'];
 let request;
 
 function status(message, error = false) {
@@ -20,11 +21,8 @@ function clearPreview() {
   el('preview').hidden = true;
 }
 
-function providerChanged() {
-  el('model').value = providers[el('provider').value].model;
-  el('api-key').value = '';
-  clearPreview();
-  status('');
+function showSetupHint(config) {
+  el('setup-hint').hidden = !!config?.key;
 }
 
 function copyButton(label, text) {
@@ -74,15 +72,9 @@ function showPreview(results) {
 el('translate-form').addEventListener('submit', async event => {
   event.preventDefault();
   if (request) return;
-  const config = {
-    provider: el('provider').value,
-    model: el('model').value.trim(),
-    key: el('api-key').value.trim(),
-    instructions: el('instructions').value.trim(),
-  };
   const languages = [...new Set(el('languages').value.split(/[,，、;；\n]+/).map(value => value.trim()).filter(Boolean))];
-  if (!config.key || !config.model || !languages.length || languages.length > 8) {
-    status('请填写 API Key、模型和 1 至 8 种目标语言。', true);
+  if (!languages.length || languages.length > 8) {
+    status('请填写 1 至 8 种目标语言。', true);
     return;
   }
 
@@ -91,6 +83,10 @@ el('translate-form').addEventListener('submit', async event => {
   setBusy(true);
   try {
     const items = sourceItems(el('source').value, el('split-lines').checked);
+    const config = await loadConfig();
+    showSetupHint(config);
+    if (!config.key) throw new Error('请先在「设置」保存 API Key。');
+    config.instructions = el('instructions').value.trim();
     const results = await translateItems(config, items, languages, request.signal, (language, batch, total) => {
       status('正在翻译到 ' + language + ' · 第 ' + batch + ' / ' + total + ' 批');
     });
@@ -107,10 +103,19 @@ el('translate-form').addEventListener('submit', async event => {
   }
 });
 
-el('provider').addEventListener('change', providerChanged);
+el('open-settings').addEventListener('click', async () => {
+  try {
+    await chrome.runtime.openOptionsPage();
+  } catch {
+    status('无法打开 API 设置，请从扩展菜单打开设置。', true);
+  }
+});
 el('cancel').addEventListener('click', () => request?.abort());
-inputIds.filter(id => id !== 'provider').forEach(id => el(id).addEventListener('input', () => {
+inputIds.forEach(id => el(id).addEventListener('input', () => {
   clearPreview();
   status('');
 }));
-providerChanged();
+chrome.storage.onChanged.addListener((changes, area) => {
+  if (area === 'local' && changes[configKey]) showSetupHint(changes[configKey].newValue);
+});
+loadConfig().then(showSetupHint).catch(() => status('无法读取本地设置，请重新打开侧栏。', true));

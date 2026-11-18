@@ -3,7 +3,7 @@
   "name": "FigmaCN",
   "short_name": "FigmaCN",
   "description": "自动汉化 Figma 网页界面，并在浏览器侧栏批量翻译设计文案。",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "icons": {
     "16": "img/icon-16.png",
     "48": "img/icon-48.png",
@@ -23,7 +23,7 @@
       "all_frames": true
     }
   ],
-  "permissions": ["sidePanel"],
+  "permissions": ["sidePanel", "storage"],
   "host_permissions": [
     "*://*.figma.com/*",
     "https://api.deepseek.com/*",
@@ -39,5 +39,9 @@
   },
   "side_panel": {
     "default_path": "sidepanel.html"
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
   }
 }

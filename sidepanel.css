@@ -24,6 +24,7 @@
 [hidden] { display: none !important; }
 body { margin: 0; color: var(--ink); background: var(--paper); }
 main { padding: 18px; }
+.options { max-width: 460px; margin: 24px auto; }
 header { display: flex; align-items: center; gap: 11px; padding-bottom: 15px; border-bottom: 1px solid var(--line); margin-bottom: 16px; }
 header p { margin: 0; font-size: 11px; color: var(--muted); }
 h1, h2, h3 { margin: 0; line-height: 1.25; }
@@ -32,7 +33,7 @@ h2 { font-size: 21px; letter-spacing: -.025em; }
 h3 { font-size: 14px; }
 .intro, .note { margin: 7px 0 13px; color: var(--muted); }
 .note { font-size: 11px; }
-.split { display: grid; gap: 8px; grid-template-columns: minmax(90px, 1fr) minmax(110px, 1.25fr); }
+.settings-button { margin-left: auto; flex: none; }
 label { display: block; margin-bottom: 4px; font-weight: 650; }
 input:not([type="checkbox"]), select, textarea, button {
   color: inherit; background: var(--paper); border: 1px solid var(--line);
