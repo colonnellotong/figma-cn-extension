@@ -39,18 +39,175 @@
   ];
   // The archived dictionary contains one sparse legacy record. Filter malformed
   // items so a single bad translation can never stop the whole extension.
+  entries.push(...(window.__FigmaCNWebEntries || []));
   const dictionary = new Map(entries.filter((entry) => Array.isArray(entry) && entry.length >= 2 && typeof entry[0] === 'string' && typeof entry[1] === 'string'));
-  const attributeNames = ['aria-label', 'data-label', 'data-tooltip', 'title', 'placeholder'];
+  // A standalone period can represent the period key in the shortcut editor.
+  dictionary.delete('.');
+  const attributeNames = ['aria-label', 'aria-description', 'data-label', 'data-tooltip', 'title', 'placeholder', 'alt'];
   const ignoredTags = new Set(['SCRIPT', 'STYLE', 'NOSCRIPT', 'TEXTAREA', 'CODE', 'PRE']);
+  const fileBrowserPath = /^\/files(?:\/|$)/;
+  let fileBrowser = false;
+  const fileBrowserLabels = new Map([
+    ['Recents – Figma', '最近使用 – Figma'],
+    ['Resources – Figma', '资源 – Figma'],
+    ['Community – Figma', '社区 – Figma'],
+    ['Drafts – Figma', '草稿 – Figma'],
+    ['New Design file', '新建设计文件'],
+    ['New Slides file', '新建演示文稿'],
+    ['New Make file', '新建 Make 文件'],
+    ['New Spec file', '新建规格文件'],
+    ['Describe your idea and make it come to life', '描述你的想法，把它变成设计'],
+    ['Learn about AI tools in Figma Design', '了解 Figma Design 中的 AI 工具'],
+    ['Dismiss prompt box', '关闭提示词输入框'],
+    ['Prompt input field', '提示词输入框'],
+    ['Design a compact stats card with three metrics and a small bar chart, then animate it', '设计一张紧凑的统计卡片，包含三项指标和一张小型柱状图，再为它添加动画'],
+    ['Design a file from this', '根据提示创建设计文件'],
+    ['Shared files', '共享文件'],
+    ['Shared folders', '共享文件夹'],
+    ['Date shared', '共享日期'],
+    ['Oldest first', '最早的在前'],
+    ['Newest first', '最新的在前'],
+    ["Couldn't find any matches. Try adjusting your filters.", '未找到匹配结果，请调整筛选条件。'],
+    ['View mode', '查看方式'],
+    ['Sidebar', '侧边栏'],
+    ['Help/zoom toolbar', '帮助与缩放工具栏'],
+    ['New notification received', '收到新通知'],
+    ['Notifications, new notification received', '通知，有新通知'],
+    ['Open Community in new tab', '在新标签页中打开社区'],
+    ['Move row down', '下移一行'],
+    ['Move row up', '上移一行'],
+    ['Add to Starred', '添加到收藏夹'],
+    ['Remove from Starred', '取消收藏'],
+    ['Create folder', '创建文件夹'],
+    ['Open team dropdown', '打开团队菜单'],
+    ['Remove from sidebar', '从侧边栏移除'],
+    ['Upgrade to create more folders', '升级以创建更多文件夹'],
+    ['Unlimited on the', '不限数量，适用于'],
+    ['Upgrade to create more folders Unlimited on the', '升级以创建更多文件夹。不限数量，适用于'],
+    ['Professional plan', '专业版套餐'],
+    ['Free plan', '免费套餐'],
+    ['monthly', '每月'],
+    ['daily credits used', '今日已用点数'],
+    ['Loading', '正在加载'],
+    ['Edited', '编辑于'],
+    ['Updated', '更新于'],
+    ['Slides file', '演示文稿'],
+    ['Make file', 'Make 文件'],
+    ['Spec file', '规格文件'],
+  ]);
 
-  function translate(value) {
+  function translateFileBrowser(text, attribute) {
+    const label = fileBrowserLabels.get(text);
+    if (label) return label;
+
+    const activity = text.match(/^(Edited|Updated) (just now|yesterday|today|[\d,]+ (?:seconds?|minutes?|hours?|days?|weeks?|months?|years?) ago|刚刚|昨天|今天|[\d,]+\s*(?:秒|分钟|小时|天|周|个月|年)前)$/);
+    if (activity) {
+      const [, action, time] = activity;
+      const relative = time.match(/^([\d,]+) (second|minute|hour|day|week|month|year)s? ago$/);
+      const units = { second: '秒', minute: '分钟', hour: '小时', day: '天', week: '周', month: '个月', year: '年' };
+      const translatedTime = relative
+        ? relative[1] + ' ' + units[relative[2]] + '前'
+        : (dictionary.get(time) || time);
+      return fileBrowserLabels.get(action) + ' ' + translatedTime;
+    }
+
+    if (!attribute) return;
+    const plan = text.match(/^Change plan\. (.+) currently on Free plan$/);
+    if (plan) return '更改套餐。' + plan[1] + ' 当前使用免费套餐';
+
+    const namedItem = text.match(/^(.+), (Design file|FigJam file|Slides file|Make file|Spec file|Free plan)$/);
+    if (namedItem) return namedItem[1] + '，' + (fileBrowserLabels.get(namedItem[2]) || dictionary.get(namedItem[2]));
+  }
+
+  function normalizeLabel(text) {
+    return text.trim().replace(/\s+/g, ' ').replace(/[‘’]/g, "'").replace(/…$/, '...');
+  }
+
+  const normalizedDictionary = new Map(
+    [...dictionary].filter(([label]) => label === label.trim())
+      .map(([label, translation]) => [normalizeLabel(label), translation])
+  );
+
+  function translateGeneratedLabel(text, attribute) {
+    const count = text.match(/^([\d,.]+[kKmM]?) (connections?|users?|likes?|shapes?|columns?|rows?)$/);
+    if (count) {
+      const units = { connection: '个连接', user: '位用户', like: '次点赞', shape: '个形状', column: '列', row: '行' };
+      return count[1] + ' ' + units[count[2].replace(/s$/, '')];
+    }
+    const guide = text.match(/^(?:(\d+) )?(Columns?|Rows?) \(([\d.]+)\s*px\)$/i);
+    if (guide) return (guide[1] ? guide[1] + ' ' : '') + (/^col/i.test(guide[2]) ? '列' : '行') + '（' + guide[3] + ' 像素）';
+    const grid = text.match(/^Grid ([\d.]+)\s*px$/);
+    if (grid) return '网格 ' + grid[1] + ' 像素';
+    const unread = text.match(/^Unread \((\d+)\)$/);
+    if (unread) return '未读（' + unread[1] + '）';
+    const usage = text.match(/^([\d,]+)\s*\/\s*([\d,]+) (monthly|daily credits used|Out of Design & Sites files)$/);
+    if (usage) {
+      const periods = { monthly: '每月已用点数', 'daily credits used': '今日已用点数', 'Out of Design & Sites files': '已用 Design 和 Sites 文件名额' };
+      return periods[usage[3]] + ' ' + usage[1] + ' / ' + usage[2];
+    }
+    const available = text.match(/^([\d,]+) available$/);
+    if (fileBrowser && available) return '剩余 ' + available[1] + ' 次';
+    const freeFiles = text.match(/^You['’]ve used (\d+) of (\d+) free files$/);
+    if (freeFiles) return '已使用 ' + freeFiles[1] + ' / ' + freeFiles[2] + ' 个免费文件';
+    const selection = text.match(/^Share to selection "(.+)"$/);
+    if (selection) return '分享选中的「' + selection[1] + '」';
+
+    if (!attribute) return;
+    const hex = text.match(/^Solid color hex: (#?[\dA-F]{6})$/i);
+    if (hex) return '纯色，十六进制色值：' + hex[1];
+    const zoom = text.match(/^([\d.]+%), zoom and view options$/);
+    if (zoom) return zoom[1] + '，缩放和视图选项';
+    const fileName = text.match(/^(.+), file name$/);
+    if (fileName) return fileName[1] + '，文件名';
+    const expand = text.match(/^Expand panel for file named (.+)$/);
+    if (expand) return '展开文件面板：' + expand[1];
+    const goToSelection = text.match(/^Go to selection on canvas: (.+)$/);
+    if (goToSelection) return '在画布上定位所选内容：' + goToSelection[1];
+    const selectedFrame = text.match(/^Frame called (.+) is selected and can be prompted to make changes$/);
+    if (selectedFrame) return '已选中画框「' + selectedFrame[1] + '」，可通过提示词修改';
+    const more = text.match(/^(.+), See more$/);
+    if (more) return (dictionary.get(more[1]) || more[1]) + '，查看更多';
+    const viewTemplate = text.match(/^(.+), View template$/);
+    if (viewTemplate) return viewTemplate[1] + '，查看模板';
+    const shapeLibrary = text.match(/^(AWS|Azure|Cisco|Google Cloud|Kubernetes) (\d+) shapes$/);
+    if (shapeLibrary) return shapeLibrary[1] + '，' + shapeLibrary[2] + ' 个形状';
+  }
+
+  function translateContextualLabel(text, element) {
+    if (text === 'Light') {
+      const menu = element?.closest('[role="menu"]');
+      if (menu && /System theme|跟随系统/.test(menu.textContent)) return '浅色';
+    }
+    if (text === 'Cursor') {
+      const setup = element?.closest('[role="tablist"], [role="dialog"], [aria-modal="true"]');
+      if (setup && /Claude (?:Code|Desktop)/.test(setup.textContent) && setup.textContent.includes('Xcode')) {
+        return 'Cursor';
+      }
+    }
+    if (text === 'Alignment' && location.pathname.startsWith('/slides/')) {
+      for (let panel = element, depth = 0; panel && depth < 6; panel = panel.parentElement, depth++) {
+        if (/Give your audience something to interact with|让观众参与互动/.test(panel.textContent)) return '意见一致度';
+      }
+    }
+  }
+
+  function translate(value, attribute = false, element) {
     if (!value) return value;
     const match = value.match(/^(\s*)([\s\S]*?)(\s*)$/);
     // Figma sometimes inserts non-breaking spaces or line breaks between words.
     // Normalize those DOM-only differences before looking up a UI label.
     const normalized = match[2].replace(/\s+/g, ' ');
-    const translated = dictionary.get(match[2]) || dictionary.get(normalized);
+    const translated = translateContextualLabel(normalized, element)
+      || (fileBrowser && translateFileBrowser(normalized, attribute))
+      || dictionary.get(match[2]) || dictionary.get(normalized)
+      || normalizedDictionary.get(normalizeLabel(normalized))
+      || translateGeneratedLabel(normalized, attribute);
     if (translated) return match[1] + translated + match[3];
+
+    // Figma sometimes renders the bullet or step number in the same text node.
+    const step = normalized.match(/^((?:•|\d+\.) )(.+)$/);
+    const stepTranslation = step && normalizedDictionary.get(normalizeLabel(step[2]));
+    if (stepTranslation) return match[1] + step[1] + stepTranslation + match[3];
 
     // Figma combines the following system text with a locale-formatted time.
     // Matching only this fixed prefix avoids touching file names or comments.
@@ -66,13 +223,13 @@
     if (node.nodeType === Node.TEXT_NODE) {
       const parent = node.parentElement;
       if (!parent || ignoredTags.has(parent.tagName) || parent.isContentEditable) return;
-      const next = translate(node.nodeValue);
-      if (next !== node.nodeValue) node.nodeValue = next;
+      const next = translate(node.nodeValue, false, parent);
+      if (next !== node.nodeValue && !parent.closest('code, pre')) node.nodeValue = next;
       return;
     }
     if (node.nodeType !== Node.ELEMENT_NODE || ignoredTags.has(node.tagName) || node.isContentEditable) return;
     for (const name of attributeNames) {
-      const value = node.getAttribute(name), next = translate(value);
+      const value = node.getAttribute(name), next = translate(value, true, node);
       if (next !== value) node.setAttribute(name, next);
     }
   }
@@ -84,14 +241,26 @@
     while ((node = walker.nextNode())) translateNode(node);
   }
   let queued = false;
+  function translatePage() {
+    // Figma can move between editors and the file browser without reloading.
+    fileBrowser = fileBrowserPath.test(location.pathname);
+    translateTree(document.body);
+    if (fileBrowser) {
+      const title = translate(document.title);
+      if (title !== document.title) document.title = title;
+    }
+  }
   function schedule() {
     if (queued) return;
     queued = true;
-    requestAnimationFrame(() => { queued = false; translateTree(document.body); });
+    requestAnimationFrame(() => { queued = false; translatePage(); });
   }
   function start() {
-    translateTree(document.body);
-    new MutationObserver(schedule).observe(document.body, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: attributeNames });
+    translatePage();
+    const observer = new MutationObserver(schedule);
+    observer.observe(document.body, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: attributeNames });
+    const title = document.head?.querySelector('title');
+    if (title) observer.observe(title, { childList: true, subtree: true, characterData: true });
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, { once: true }); else start();
 })();

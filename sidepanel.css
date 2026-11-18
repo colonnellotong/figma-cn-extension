@@ -1,0 +1,58 @@
+:root {
+  color-scheme: light dark;
+  font: 13px/1.55 -apple-system, BlinkMacSystemFont, "Microsoft YaHei", sans-serif;
+  --ink: #172822;
+  --muted: #52665d;
+  --paper: #fff;
+  --soft: #eff5f1;
+  --line: #cddad2;
+  --action: #126a53;
+  --error: #af3028;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ink: #e6f1e9;
+    --muted: #aabeb2;
+    --paper: #17241e;
+    --soft: #23362b;
+    --line: #3c5346;
+    --action: #16745b;
+    --error: #ff9a92;
+  }
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { margin: 0; color: var(--ink); background: var(--paper); }
+main { padding: 18px; }
+header { display: flex; align-items: center; gap: 11px; padding-bottom: 15px; border-bottom: 1px solid var(--line); margin-bottom: 16px; }
+header p { margin: 0; font-size: 11px; color: var(--muted); }
+h1, h2, h3 { margin: 0; line-height: 1.25; }
+h1 { font-size: 17px; letter-spacing: -.015em; }
+h2 { font-size: 21px; letter-spacing: -.025em; }
+h3 { font-size: 14px; }
+.intro, .note { margin: 7px 0 13px; color: var(--muted); }
+.note { font-size: 11px; }
+.split { display: grid; gap: 8px; grid-template-columns: minmax(90px, 1fr) minmax(110px, 1.25fr); }
+label { display: block; margin-bottom: 4px; font-weight: 650; }
+input:not([type="checkbox"]), select, textarea, button {
+  color: inherit; background: var(--paper); border: 1px solid var(--line);
+  border-radius: 6px; font: inherit; padding: 6px 8px;
+}
+input:not([type="checkbox"]), select, textarea { width: 100%; min-width: 0; margin-bottom: 10px; }
+textarea { display: block; resize: vertical; }
+.check { display: flex; align-items: center; gap: 6px; margin-bottom: 13px; font-weight: 450; }
+.check input { margin: 0; accent-color: var(--action); }
+summary { cursor: pointer; }
+details textarea { margin-top: 6px; }
+button { font-weight: 650; cursor: pointer; }
+button:disabled { opacity: .55; cursor: wait; }
+button.primary { color: #fff; background: var(--action); border-color: var(--action); flex: 1; }
+.actions, .result-heading { display: flex; gap: 8px; align-items: center; }
+.result-heading { justify-content: space-between; margin-bottom: 8px; }
+#status { color: var(--muted); margin: 10px 0 4px; }
+#status.error { color: var(--error); }
+.result-group { margin-top: 14px; border-top: 1px solid var(--line); padding-top: 12px; }
+.pair { background: var(--soft); padding: 8px; margin: 7px 0; border-radius: 6px; }
+.pair p { white-space: pre-wrap; overflow-wrap: anywhere; margin: 2px 0 6px; }
+.pair .source-text { color: var(--muted); }
+.pair button { font-size: 11px; }

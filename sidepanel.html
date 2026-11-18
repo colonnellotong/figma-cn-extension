@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FigmaCN · 图层译写</title>
+  <link rel="stylesheet" href="sidepanel.css">
+</head>
+<body>
+  <main>
+    <header>
+      <img src="img/icon-48.png" width="32" height="32" alt="">
+      <div>
+        <h1>FigmaCN</h1>
+        <p>打开 Figma 网页时自动汉化界面</p>
+      </div>
+    </header>
+    <h2>图层译写</h2>
+    <p class="intro">从 Figma 复制文字图层的原文，粘贴到这里。审阅后可逐条复制译文，粘贴到画框副本的对应图层。</p>
+    <form id="translate-form">
+      <label for="source">图层原文</label>
+      <textarea id="source" rows="6" required placeholder="粘贴原文，每行可作为一项翻译"></textarea>
+      <label class="check"><input id="split-lines" type="checkbox" checked>逐行翻译，适合多条短文案</label>
+      <div class="split">
+        <div>
+          <label for="provider">API 服务</label>
+          <select id="provider">
+            <option value="deepseek">DeepSeek</option>
+            <option value="gemini">Gemini</option>
+            <option value="openai">OpenAI</option>
+          </select>
+        </div>
+        <div>
+          <label for="model">模型</label>
+          <input id="model" spellcheck="false" required>
+        </div>
+      </div>
+      <label for="api-key">API Key</label>
+      <input id="api-key" type="password" placeholder="当前侧栏会话使用" autocomplete="off" required>
+      <label for="languages">目标语言</label>
+      <input id="languages" value="简体中文" required placeholder="例：简体中文、English、日本語">
+      <details>
+        <summary>术语或语气要求</summary>
+        <textarea id="instructions" rows="2" maxlength="1500" aria-label="术语或语气要求" placeholder="例：使用简洁的 UI 文案，保留品牌名。"></textarea>
+      </details>
+      <p class="note">点击生成后，原文和翻译要求会发给所选 API。</p>
+      <div class="actions">
+        <button id="generate" type="submit" class="primary">生成译文</button>
+        <button id="cancel" type="button" hidden>取消</button>
+      </div>
+    </form>
+    <p id="status" role="status" aria-live="polite"></p>
+    <section id="preview" aria-label="译文预览" hidden></section>
+  </main>
+  <script type="module" src="js/sidepanel.js"></script>
+</body>
+</html>
